@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ASE Map - $title</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' }
+        });
+    </script>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #adbac7;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            padding: 20px;
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            text-align: center;
+        }
+
+        h1 {
+            color: #58a6ff;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .container {
+            flex: 1;
+            overflow: auto;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .mermaid {
+            min-width: 1000px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>ASE Intelligence Map: $title</h1>
+    </header>
+    <div class="container">
+        <pre class="mermaid">
+$code
+        </pre>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# --- Virtual Environments ---
+venv/
+env/
+ENV/
+.env
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# --- ASE Project Specific ---
+# Exclude the internal ASE database and state folder
+.ase/
+!/.ase/.keep  # (Optional: if you want to keep the folder structure but not content)
+*.db
+*.sqlite3
+
+# --- IDE & Editor ---
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# --- OS Specific ---
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# --- Logs & Debug ---
+*.log
+debug_*.csv
+debug_*.txt
+temp/
+tmp/
+coverage.xml
+*.cover
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# --- Environment Variables (CRITICAL) ---
+.env
+.env.local
+.env.*.local

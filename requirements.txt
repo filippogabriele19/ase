@@ -1,0 +1,13 @@
+# Core Framework
+typer>=0.12.0
+fastapi>=0.100.0
+uvicorn[standard]>=0.20.0
+pydantic>=2.0.0
+
+# Code Analysis & Patching
+libcst>=1.0.0
+tree-sitter-languages>=1.8.0
+networkx>=3.0.0
+
+# AI/LLM Integration
+anthropic>=0.7.0

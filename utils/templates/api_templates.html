@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ASE Code Review</title>
+    <!-- Load Monaco Editor from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1e1e1e;
+            color: #ccc;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+
+        #header {
+            height: 50px;
+            background: #252526;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 1px solid #3e3e42;
+            justify-content: space-between;
+        }
+
+        #title {
+            font-weight: bold;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        #controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            padding: 6px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 2px;
+        }
+
+        .btn-approve {
+            background: #3fb950;
+            color: white;
+        }
+
+        .btn-reject {
+            background: #f85149;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        #main-container {
+            display: flex;
+            height: calc(100vh - 50px);
+        }
+
+        #file-list {
+            width: 250px;
+            background: #252526;
+            border-right: 1px solid #3e3e42;
+            overflow-y: auto;
+        }
+
+        .file-item {
+            padding: 8px 15px;
+            cursor: pointer;
+            color: #cccccc;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+        }
+
+        .file-item:hover {
+            background: #2a2d2e;
+            color: #fff;
+        }
+
+        .file-item.active {
+            background: #37373d;
+            color: #fff;
+            border-left: 3px solid #007acc;
+        }
+
+        .status-icon {
+            margin-right: 8px;
+            font-size: 10px;
+        }
+
+        #editor-container {
+            flex: 1;
+            position: relative;
+        }
+
+        #empty-state {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header">
+        <div id="title">🛠️ ASE Review</div>
+        <div id="controls" style="display:none">
+            <span id="current-file" style="margin-right: 15px; opacity: 0.7;"></span>
+            <button class="btn btn-approve" onclick="approveCurrent()">✓ Approve File</button>
+            <button class="btn btn-reject" onclick="rejectCurrent()">✗ Discard File</button>
+        </div>
+    </div>
+
+    <div id="main-container">
+        <div id="file-list"></div>
+        <div id="editor-container">
+            <div id="empty-state">Select a file to review changes</div>
+        </div>
+    </div>
+
+    <script>
+        require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs' } });
+
+        let diffEditor = null;
+        let changes = [];
+        let currentIndex = -1;
+
+        async function init() {
+            const res = await fetch('/api/changes');
+            const data = await res.json();
+            changes = data.changes;
+            renderFileList();
+
+            if (changes.length > 0) {
+                selectFile(0);
+            } else {
+                document.getElementById('empty-state').innerText = "✅ All changes reviewed!";
+            }
+        }
+
+        function renderFileList() {
+            const list = document.getElementById('file-list');
+            list.innerHTML = changes.map((c, i) => `
+                <div class="file-item ${i === currentIndex ? 'active' : ''}" onclick="selectFile(${i})">
+                    <span class="status-icon">📝</span> ${c.file}
+                </div>
+            `).join('');
+        }
+
+        function selectFile(index) {
+            currentIndex = index;
+            renderFileList();
+            const change = changes[index];
+
+            document.getElementById('current-file').innerText = change.file;
+            document.getElementById('controls').style.display = 'flex';
+            document.getElementById('empty-state').style.display = 'none';
+
+            require(['vs/editor/editor.main'], function () {
+                if (!diffEditor) {
+                    diffEditor = monaco.editor.createDiffEditor(document.getElementById('editor-container'), {
+                        theme: 'vs-dark',
+                        originalEditable: false,
+                        automaticLayout: true,
+                        renderSideBySide: true
+                    });
+                }
+
+                const originalModel = monaco.editor.createModel(change.original, getLang(change.file));
+                const modifiedModel = monaco.editor.createModel(change.proposed, getLang(change.file));
+
+                diffEditor.setModel({
+                    original: originalModel,
+                    modified: modifiedModel
+                });
+            });
+        }
+
+        function getLang(filename) {
+            if (filename.endsWith('.py')) return 'python';
+            if (filename.endsWith('.js')) return 'javascript';
+            if (filename.endsWith('.html')) return 'html';
+            if (filename.endsWith('.json')) return 'json';
+            return 'plaintext';
+        }
+
+        async function approveCurrent() {
+            if (currentIndex < 0) return;
+            const file = changes[currentIndex].file;
+            await fetch(`/api/approve?file=${file}`, { method: 'POST' });
+            location.reload(); // Ricarica grezza ma efficace per ora
+        }
+
+        async function rejectCurrent() {
+            if (currentIndex < 0) return;
+            const file = changes[currentIndex].file;
+            await fetch(`/api/discard?file=${file}`, { method: 'POST' });
+            location.reload();
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
