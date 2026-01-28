@@ -79,7 +79,7 @@ Stages all changes for review
 Human decision: Approve/discard in the UI. No merge conflicts, no broken imports.
 
 # Architecture
-
+```text
 ase/
 ├── core/
 │   ├── engine.py          # Orchestrator (scan → plan → work)
@@ -96,26 +96,26 @@ ase/
 ├── llm/                   # LLM abstraction layer
 ├── server/                # FastAPI review UI
 └── utils/                 # Visualization (Mermaid graphs)
-
+```
 # Features
 
 ✅ MVP (Available Now)
 
-Python full AST support (functions, classes, imports)
-Multi-language indexing (JS, TS, Dart, Go, Rust, PHP)
-Web-based diff review UI
-Automatic backup/undo system
-Interactive dependency graph visualization
-Anthropic Claude integration
-Ollama support (experimental)
+- Python full AST support (functions, classes, imports)
+- Multi-language indexing (JS, TS, Dart, Go, Rust, PHP)
+- Web-based diff review UI
+- Automatic backup/undo system
+- Interactive dependency graph visualization
+- Anthropic Claude integration
+- Ollama support (experimental)
 
 🚧 In Progress
 
-Local LLM fine-tuning for enterprise privacy
-Java/C#/COBOL parsing (Tree-sitter integration)
-CI/CD integration (GitHub Actions, GitLab)
-Multi-file transaction rollback
-Permissions/policy engine for regulated industries
+- Local LLM fine-tuning for enterprise privacy
+- Java/C#/COBOL parsing (Tree-sitter integration)
+- CI/CD integration (GitHub Actions, GitLab)
+- Multi-file transaction rollback
+- Permissions/policy engine for regulated industries
 
 # Use Cases
 
