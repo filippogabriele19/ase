@@ -55,16 +55,16 @@ pip install -r requirements.txt
 export ANTHROPIC_API_KEY="your-key-here"
 export LLM_PROVIDER="anthropic"  # or "ollama" for local
 
-### Basic Workflow
+## Basic Workflow
 
-# 1. Index your project
+### 1. Index your project
 python ase.py scan .
 
-# 2. Run autonomous refactoring
+### 2. Run autonomous refactoring
 python ase.py apply "Extract all database logic into a new repository pattern" --path "." --loop=3
 
-# 3. Review changes in the web UI (auto-opens)
-# Approve or discard each file individually
+### 3. Review changes in the web UI (auto-opens)
+Approve or discard each file individually
 Example: Real Refactoring Task
 Task: "Move all validation functions from utils.py to a new validators.py file"
 
@@ -101,21 +101,21 @@ ase/
 
 ✅ MVP (Available Now)
 
- Python full AST support (functions, classes, imports)
- Multi-language indexing (JS, TS, Dart, Go, Rust, PHP)
- Web-based diff review UI
- Automatic backup/undo system
- Interactive dependency graph visualization
- Anthropic Claude integration
- Ollama support (experimental)
+Python full AST support (functions, classes, imports)
+Multi-language indexing (JS, TS, Dart, Go, Rust, PHP)
+Web-based diff review UI
+Automatic backup/undo system
+Interactive dependency graph visualization
+Anthropic Claude integration
+Ollama support (experimental)
 
 🚧 In Progress
 
- Local LLM fine-tuning for enterprise privacy
- Java/C#/COBOL parsing (Tree-sitter integration)
- CI/CD integration (GitHub Actions, GitLab)
- Multi-file transaction rollback
- Permissions/policy engine for regulated industries
+Local LLM fine-tuning for enterprise privacy
+Java/C#/COBOL parsing (Tree-sitter integration)
+CI/CD integration (GitHub Actions, GitLab)
+Multi-file transaction rollback
+Permissions/policy engine for regulated industries
 
 # Use Cases
 
